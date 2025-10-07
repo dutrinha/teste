@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para o Meu Amor</title>
+    <!-- Carrega Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuração do Tailwind para usar a fonte Inter, cores românticas e pergaminho -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rose-love': '#FFC0CB', // Rosa Suave
+                        'red-heart': '#DC2626', // Vermelho Coração
+                        'maroon-deep': '#5C001F', // Vermelho Escuro/Marrom para o fundo
+                        'parchment': '#FFF8E1', // Cor de Pergaminho
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        // Usaremos uma fonte serifada para simular melhor o visual de carta
+                        letter: ['Georgia', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos de Fundo e Layout */
+        body {
+            background-color: #5C001F; /* Garante o fundo vermelho escuro */
+        }
+        
+        /* Estilos personalizados para o efeito de envelope/carta */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+
+        .closed-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.3); /* Sombra branca no fundo escuro */
+            cursor: pointer;
+        }
+
+        .closed-card {
+            transition: all 0.3s ease-in-out;
+            transform-origin: center;
+        }
+
+        /* Estilo para animação de pulsação do coração (cartão fechado) */
+        @keyframes pulse-heart {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .animate-pulse-heart {
+            animation: pulse-heart 1.5s infinite ease-in-out;
+        }
+        
+        /* Oculta o conteúdo da carta por padrão */
+        #open-letter-content {
+            display: none;
+        }
+        
+        /* Estilo para simular papel antigo (parchment) */
+        .parchment-paper {
+            background-color: #FFF8E1; /* Cor de pergaminho */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid #D7C49E; /* Borda levemente envelhecida */
+        }
+
+        /* Corações e Fotos Flutuantes no Fundo */
+        #heart-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Garante que os elementos não bloqueiem cliques */
+            overflow: hidden;
+            z-index: 0; /* Fica atrás da carta */
+        }
+
+        .floating-element {
+            position: absolute;
+            color: #DC2626; /* Cor base para corações */
+            opacity: 0.6;
+            animation: floatUp linear infinite;
+        }
+
+        /* Estilo para as fotos flutuantes */
+        .floating-image {
+            width: 80px; /* Tamanho da "foto" flutuante */
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 3px solid #FFF8E1; /* Borda cor de pergaminho para simular Polaroid */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Animação de subida */
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5) rotate(0deg); opacity: 0.2; }
+            100% { transform: translateY(-10vh) scale(1.2) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-maroon-deep min-h-screen flex items-center justify-center p-4 font-sans relative">
+
+    <!-- Container para os Corações e Fotos Flutuantes (Fundo) -->
+    <div id="heart-container"></div>
+
+    <div id="closed-letter-card" class="closed-card bg-white p-8 rounded-xl shadow-2xl max-w-sm w-full text-center z-10 hover:shadow-white/50" onclick="openLetter()">
+        <!-- Estrutura da Carta Fechada -->
+        <h1 class="text-3xl font-bold text-red-heart mb-4">Uma Carta Especial</h1>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-20 h-20 mx-auto text-red-heart animate-pulse-heart">
+            <!-- Ícone de Envelope/Carta Fechada -->
+            <path d="M1.5 8.67v8.582a1.5 1.5 0 001.5 1.5h17.25a1.5 1.5 0 001.5-1.5V8.67A1.5 1.5 0 0021.75 7.5H2.25A1.5 1.5 0 001.5 8.67zM16.5 7.5a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+        </svg>
+        <p class="mt-4 text-gray-700 font-semibold">Clique para abrir sua surpresa, meu amor.</p>
+    </div>
+
+    <div id="open-letter-content" class="parchment-paper p-6 md:p-10 rounded-xl max-w-4xl w-full z-10">
+        <!-- Estrutura da Carta Aberta (Visual de Pergaminho) -->
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- Seção da Carta (Maior) -->
+            <div class="lg:w-2/3">
+                <div class="border-b-4 border-red-heart pb-3 mb-6">
+                    <h2 class="text-4xl font-extrabold text-red-heart mb-2 font-letter">Meu Amor Eterno ❤️</h2>
+                    <p class="text-lg text-gray-500 italic font-letter">25 de Outubro de 2025</p>
+                </div>
+                
+                <!-- A classe font-letter aplica a fonte serifada para o visual de carta -->
+                <div class="text-gray-800 font-letter leading-relaxed text-base md:text-lg space-y-4">
+                    <!-- PARÁGRAFO 1 (LOREM IPSUM) - Substitua este texto pelo seu. -->
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+                    <!-- PARÁGRAFO 2 (LOREM IPSUM) - Substitua este texto pelo seu. -->
+                    <p>Praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</p>
+
+                    <!-- PARÁGRAFO 3 (LOREM IPSUM) - Substitua este texto pelo seu. -->
+                    <p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+                </div>
+                
+                <div class="mt-8 pt-4 border-t-2 border-rose-love font-letter">
+                    <p class="text-xl font-semibold text-red-heart">Com todo meu carinho,</p>
+                    <p class="text-2xl font-bold text-red-heart">Seu [Seu Nome Aqui]</p>
+                </div>
+            </div>
+
+            <!-- Seção de Fotos e Elementos Visuais -->
+            <div class="lg:w-1/3 flex flex-col space-y-6">
+                <div class="bg-rose-love/30 p-4 rounded-lg shadow-inner">
+                    <h3 class="text-2xl font-bold text-red-heart mb-3 border-b border-rose-love pb-2">Nossos Momentos Favoritos</h3>
+                    <!-- Placeholder para a Foto Principal -->
+                    <img src="https://placehold.co/400x300/F9A8D4/ffffff?text=Sua+Foto+Especial+Aqui" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/400x300/F9A8D4/ffffff?text=Erro+ao+Carregar+Foto'"
+                         alt="Placeholder para uma foto especial do casal" 
+                         class="w-full h-auto object-cover rounded-lg shadow-md border-4 border-rose-love transform hover:scale-105 transition duration-300">
+                    <p class="mt-2 text-sm text-center text-gray-600">Lembre-se de substituir o URL acima pela sua foto!</p>
+                </div>
+
+                <!-- Corações Decorativos -->
+                <div class="flex justify-around p-3 bg-rose-love/30 rounded-lg">
+                    <span class="text-4xl transition-transform duration-300 hover:scale-150 transform">💖</span>
+                    <span class="text-4xl transition-transform duration-300 hover:scale-150 transform">💞</span>
+                    <span class="text-4xl transition-transform duration-300 hover:scale-150 transform">💘</span>
+                </div>
+
+                <!-- Mensagem Bônus -->
+                <div class="p-4 bg-red-heart text-white rounded-lg text-center shadow-lg">
+                    <p class="font-bold text-xl">Você é a razão do meu sorriso!</p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        // Lista de URLs de fotos mock que o usuário DEVE SUBSTITUIR.
+        // É importante que as fotos estejam disponíveis publicamente na web.
+        const MOCK_PHOTO_URLS = [
+            "https://placehold.co/80x80/A0E7E5/000?text=Foto+1",
+            "https://placehold.co/80x80/FFD1DC/000?text=Foto+2",
+            "https://placehold.co/80x80/B5EAD7/000?text=Foto+3",
+            "https://placehold.co/80x80/F4C7D0/000?text=Foto+4",
+            "https://placehold.co/80x80/C3B1E1/000?text=Foto+5",
+        ];
+
+        // Tipos de emoji de coração para variedade
+        const HEART_SHAPES = ['💖', '❤️', '💞', '💘', '💕'];
+
+        /**
+         * Função para "abrir" a carta, trocando a visualização
+         * do cartão fechado para o conteúdo da carta aberta.
+         */
+        function openLetter() {
+            const closedCard = document.getElementById('closed-letter-card');
+            const openContent = document.getElementById('open-letter-content');
+
+            // 1. Esconde o cartão fechado com um fade out rápido
+            closedCard.style.opacity = '0';
+            closedCard.style.transform = 'scale(0.9)';
+            
+            setTimeout(() => {
+                closedCard.style.display = 'none';
+                
+                // 2. Mostra o conteúdo da carta
+                openContent.style.display = 'block';
+                // 3. Adiciona a classe de animação para um fade in suave
+                openContent.classList.add('fade-in');
+
+            }, 300); // Tempo para o fade out do cartão fechado
+        }
+
+        /**
+         * Gera corações e fotos flutuantes no fundo da tela.
+         */
+        function generateFloatingElements() {
+            const container = document.getElementById('heart-container');
+            // Cria uma lista de elementos combinados
+            const ELEMENTS_TO_FLOAT = [...HEART_SHAPES, ...MOCK_PHOTO_URLS];
+            
+            for (let i = 0; i < 50; i++) { // Gera 50 elementos
+                const element = document.createElement('div');
+                element.classList.add('floating-element'); // Classe base para a animação
+                
+                const content = ELEMENTS_TO_FLOAT[Math.floor(Math.random() * ELEMENTS_TO_FLOAT.length)];
+
+                if (content.startsWith('http')) {
+                    // Se for uma URL de imagem (foto)
+                    const img = document.createElement('img');
+                    img.src = content;
+                    img.alt = "Foto de memória";
+                    img.classList.add('floating-image'); // Aplica o estilo de Polaroid
+                    element.appendChild(img);
+                    
+                } else {
+                    // Se for um Emoji (coração)
+                    element.innerHTML = content;
+                    // Emojis precisam de um tamanho de fonte
+                    element.style.fontSize = `${15 + Math.random() * 25}px`; 
+                }
+
+                // Randomiza a posição inicial (left), duração e delay da animação
+                element.style.left = `${Math.random() * 100}vw`;
+                element.style.animationDuration = `${5 + Math.random() * 10}s`; // 5 a 15 segundos
+                element.style.animationDelay = `${Math.random() * 5}s`; // 0 a 5 segundos de atraso
+                // Adiciona uma rotação inicial para um efeito mais natural
+                element.style.transform = `rotate(${Math.random() * 60 - 30}deg)`; 
+                
+                container.appendChild(element);
+            }
+        }
+        
+        // Inicia a geração dos elementos flutuantes assim que a página é carregada
+        window.onload = function() {
+            generateFloatingElements();
+        };
+    </script>
+</body>
+</html>
